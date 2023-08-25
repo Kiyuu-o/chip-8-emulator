@@ -1,34 +1,30 @@
-class chip8 {
-    public:
-        chip8();
-        ~chip8();
-        void initialize();
-        void emulateCycle();
-        bool loadApplication(const char* filename);
+#pragma once
 
-        unsigned char gfx[64 * 32]; // graphics
-        unsigned char key[16];  // HEX based keypad (0x0 to 0xF)
+#include <stdbool.h>
 
-        bool drawFlag;
+typedef struct {
+    unsigned char gfx[64 * 32];
+    unsigned char key[16];
 
-        void debugRender();
+    bool drawFlag;
 
-    private:
-        unsigned short opcode;   // has the length of 2 bytes, (a char is only 1 byte)
+    unsigned short opcode;
 
-        unsigned char memory[4096]; // 4k
+    unsigned char memory[4096];
 
-        unsigned char V[16];    // registers
+    unsigned char V[16];
 
-        unsigned short I;   // index register
-        unsigned short pc;  // program counter
+    unsigned short I;
+    unsigned short pc;
 
-        // timer registers
-        unsigned char delay_timer;
-        unsigned char sound_timer;
+    unsigned char delay_timer;
+    unsigned char sound_timer;
 
-        // stack and stack pointer
-        unsigned short stack[16];
-        unsigned short sp;
+    unsigned short stack[16];
+    unsigned short sp;
+} Chip8;
 
-};
+void initialize(Chip8* cpu);
+void emulateCycle(Chip8* cpu);
+bool loadApplication(Chip8* cpu, const char* filename);
+void debugRender(Chip8* cpu);
